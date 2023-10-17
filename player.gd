@@ -3,9 +3,12 @@ extends CharacterBody2D
 
 var moving : bool = false
 const TILE_SIZE = 64
+
 var move_direction := Vector2.ZERO
 var player_postiion := self.get_position_delta()
-var speed : int = 100
+var speed : int = 30
+var target_position : Vector2
+var distance_to_move = 10 
 
 # parameters/Idle/blend_position
 
@@ -24,29 +27,28 @@ func _process(_delta: float) -> void:
 
 	calculate_velocity()
 	move_and_slide()
+	check_position()
 
 		
 
 func _input(event: InputEvent) -> void:
 
 	if !moving:
-		print(event)
+		var x_position = int(position.x)
+		var y_position = int(position.y)
 		if event.is_action_pressed("move_forward"):
 			move_direction = Vector2(0, -1);
-			# position.y -= 10;
+			target_position = Vector2(int(x_position) , y_position - distance_to_move);
 		elif event.is_action_pressed("move_backward"):
 			move_direction = Vector2(0, 1);
-			# position.y += 10;
+			target_position = Vector2(int(x_position) , y_position + distance_to_move);
 		elif event.is_action_pressed("move_left"):
 			move_direction = Vector2(-1, 0);
-			# position.x -= 10;
+			target_position = Vector2(x_position - distance_to_move, int(y_position));
 		elif event.is_action_pressed("move_right"):
 			move_direction = Vector2(1, 0);
-			# position.x += 10;
-		else:
-			move_direction = Vector2.ZERO
+			target_position = Vector2(x_position + distance_to_move, int(y_position));
 
-	change_animation_state()		
 	update_animation(move_direction)
 		
 		
@@ -66,7 +68,15 @@ func change_animation_state():
 		animation_state_machine.travel("Idle")
 		
 func calculate_velocity() -> void:
-	velocity = move_direction * speed
+
+	velocity = move_direction * speed 
 
 
+func check_position() -> void:
+
+	var current_position := Vector2(int(position.x), int(position.y)) 
+	change_animation_state()		
+
+	if target_position == current_position:
+		move_direction = Vector2.ZERO
 
