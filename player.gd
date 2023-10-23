@@ -1,14 +1,21 @@
 extends CharacterBody2D
 
 
-var moving : bool = false
+var is_moving : bool = false
 const TILE_SIZE = 64
 
 var move_direction := Vector2.ZERO
-var player_postiion := self.get_position_delta()
+var player_position := self.get_position_delta()
 var speed : int = 30
-var target_position : Vector2
-var distance_to_move = 10 
+var target_position : Vector2 
+var distance_to_move = 16 
+var can_move_f : bool = true
+var can_move_b : bool = true
+var can_move_l : bool = true
+var can_move_r : bool = true
+var x_position : int
+var y_position : int
+
 
 # parameters/Idle/blend_position
 
@@ -16,7 +23,10 @@ var distance_to_move = 10
 
 @onready var animation_tree = $AnimationTree
 @onready var animation_state_machine = animation_tree.get("parameters/playback")
-
+@onready var raycast_f = $RayCast2DF
+@onready var raycast_b = $RayCast2DB
+@onready var raycast_r = $RayCast2DR
+@onready var raycast_l = $RayCast2DL
 
 var test := Vector2.ZERO
 
@@ -33,25 +43,42 @@ func _process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 
-	if !moving:
-		var x_position = int(position.x)
-		var y_position = int(position.y)
-		if event.is_action_pressed("move_forward"):
-			move_direction = Vector2(0, -1);
-			target_position = Vector2(int(x_position) , y_position - distance_to_move);
-		elif event.is_action_pressed("move_backward"):
-			move_direction = Vector2(0, 1);
-			target_position = Vector2(int(x_position) , y_position + distance_to_move);
-		elif event.is_action_pressed("move_left"):
-			move_direction = Vector2(-1, 0);
-			target_position = Vector2(x_position - distance_to_move, int(y_position));
-		elif event.is_action_pressed("move_right"):
-			move_direction = Vector2(1, 0);
-			target_position = Vector2(x_position + distance_to_move, int(y_position));
+	if !check_is_moving():
+		get_movement_input(event)
 
 	update_animation(move_direction)
 		
-		
+
+func _physics_process(_delta):
+	
+	can_move_b = !raycast_b.is_colliding()
+	can_move_f = !raycast_f.is_colliding()
+	can_move_l = !raycast_l.is_colliding()
+	can_move_r = !raycast_r.is_colliding()
+
+
+
+func get_movement_input(event):
+
+	x_position = int(position.x)
+	y_position = int(position.y)
+
+	if event.is_action_pressed("move_forward") and can_move_f:
+		move_direction = Vector2(0, -1)
+		target_position = Vector2(x_position, y_position - distance_to_move)
+
+	elif event.is_action_pressed("move_backward") and can_move_b:
+		move_direction = Vector2(0, 1)
+		target_position = Vector2(x_position, y_position + distance_to_move)
+
+	elif event.is_action_pressed("move_left") and can_move_l:
+		move_direction = Vector2(-1, 0)
+		target_position = Vector2(x_position - distance_to_move, y_position)
+
+	elif event.is_action_pressed("move_right") and can_move_r:
+		move_direction = Vector2(1, 0)
+		target_position = Vector2(x_position + distance_to_move, y_position)
+
 
 func update_animation(move_input: Vector2) -> void:
 
@@ -78,5 +105,18 @@ func check_position() -> void:
 	change_animation_state()		
 
 	if target_position == current_position:
+		convert_position_to_int()
 		move_direction = Vector2.ZERO
+		
+		print(self.position)
+	
 
+func check_is_moving() -> bool:
+
+	is_moving = (velocity != Vector2.ZERO)
+	return is_moving
+
+
+func convert_position_to_int():
+	position.x = int(position.x)
+	position.y = int(position.y)

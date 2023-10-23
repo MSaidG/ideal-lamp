@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://player.gd" id="1_w7nup"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clird"]
-size = Vector2(10, 8)
+size = Vector2(15.5, 15.5)
 
 [sub_resource type="Animation" id="Animation_e6u48"]
 length = 0.001
@@ -243,7 +243,6 @@ hframes = 4
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_clird")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -257,3 +256,17 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Idle/blend_position = Vector2(-0.00471145, 0)
 parameters/Walk/blend_position = Vector2(-0.00117785, 0.00594592)
+
+[node name="RayCast2DF" type="RayCast2D" parent="."]
+target_position = Vector2(0, -16)
+
+[node name="RayCast2DB" type="RayCast2D" parent="."]
+target_position = Vector2(0, 16)
+
+[node name="RayCast2DR" type="RayCast2D" parent="."]
+position = Vector2(0, 1)
+target_position = Vector2(16, 0)
+
+[node name="RayCast2DL" type="RayCast2D" parent="."]
+position = Vector2(0, 1)
+target_position = Vector2(-16, 0)
