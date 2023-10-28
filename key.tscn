@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1hptlsma5ju8"]
+
+[ext_resource type="Script" path="res://key.gd" id="1_8soh1"]
+[ext_resource type="Texture2D" uid="uid://ddd48xgdh6rtq" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Egg item.png" id="1_ktsva"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ck8c7"]
+
+[node name="Key" type="Area2D"]
+script = ExtResource("1_8soh1")
+
+[node name="KeySprite" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_ktsva")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_ck8c7")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

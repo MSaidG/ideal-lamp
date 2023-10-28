@@ -2,13 +2,14 @@ extends CharacterBody2D
 
 
 var is_moving : bool = false
-const TILE_SIZE = 64
+var hasKey : bool = false
+const TILE_SIZE = 16
 
 var move_direction := Vector2.ZERO
 var player_position := self.get_position_delta()
 var speed : int = 30
 var target_position : Vector2 
-var distance_to_move = 16 
+var distance_to_move = TILE_SIZE
 var can_move_f : bool = true
 var can_move_b : bool = true
 var can_move_l : bool = true
@@ -55,6 +56,9 @@ func _physics_process(_delta):
 	can_move_f = !raycast_f.is_colliding()
 	can_move_l = !raycast_l.is_colliding()
 	can_move_r = !raycast_r.is_colliding()
+
+	# if !can_move_r:
+		# print(raycast_r.get_collider().name)
 
 
 
@@ -108,7 +112,7 @@ func check_position() -> void:
 		convert_position_to_int()
 		move_direction = Vector2.ZERO
 		
-		print(self.position)
+		# print(self.position)
 	
 
 func check_is_moving() -> bool:
@@ -120,3 +124,8 @@ func check_is_moving() -> bool:
 func convert_position_to_int():
 	position.x = int(position.x)
 	position.y = int(position.y)
+
+
+func get_key():
+	hasKey = true
+	print(hasKey)

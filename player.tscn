@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://player.gd" id="1_w7nup"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clird"]
-size = Vector2(15.5, 15.5)
+size = Vector2(3, 3)
 
 [sub_resource type="Animation" id="Animation_e6u48"]
 length = 0.001
@@ -241,6 +241,7 @@ script = ExtResource("1_w7nup")
 texture = ExtResource("1_hp7tf")
 hframes = 4
 vframes = 4
+frame = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_clird")
