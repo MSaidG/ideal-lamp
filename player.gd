@@ -51,14 +51,52 @@ func _input(event: InputEvent) -> void:
 		
 
 func _physics_process(_delta):
-	
-	can_move_b = !raycast_b.is_colliding()
-	can_move_f = !raycast_f.is_colliding()
-	can_move_l = !raycast_l.is_colliding()
-	can_move_r = !raycast_r.is_colliding()
 
-	# if !can_move_r:
-		# print(raycast_r.get_collider().name)
+	# print(raycast_f.is_colliding())
+	if raycast_b.is_colliding() and (raycast_b.get_collider() != null):
+		if raycast_b.get_collider().name == "TileMap":
+			can_move_b = false
+	else:
+		can_move_b = true
+
+	if raycast_f.is_colliding() and (raycast_f.get_collider() != null):
+		if "TileMap" in raycast_f.get_collider().name:
+			can_move_f = false
+		print(raycast_f.get_collider().name)
+
+	else:
+		can_move_f = true
+	
+	if raycast_r.is_colliding() and (raycast_r.get_collider() != null):
+		if raycast_r.get_collider().name == "TileMap":
+			can_move_r = false
+	else:
+		can_move_r = true
+			
+	if raycast_l.is_colliding() and (raycast_l.get_collider() != null):
+		if raycast_l.get_collider().name == "TileMap":
+			can_move_l = false
+
+	else:
+		can_move_l = true
+
+
+
+	
+	# if raycast_f.is_colliding():
+		# can_move_f = !(raycast_f.get_collider().name == "TileMap")
+			
+	# if raycast_r.is_colliding():
+		# can_move_r = !(raycast_r.get_collider().name == "TileMap")
+		
+	# if raycast_l.is_colliding():
+		# can_move_l = !(raycast_l.get_collider().name == "TileMap")
+
+
+	# can_move_b = !raycast_b.is_colliding()
+	# can_move_f = !raycast_f.is_colliding()
+	# can_move_l = !raycast_l.is_colliding()
+	# can_move_r = !raycast_r.is_colliding()
 
 
 
@@ -129,3 +167,12 @@ func convert_position_to_int():
 func get_key():
 	hasKey = true
 	print(hasKey)
+
+
+func check_key() -> bool:
+
+	return hasKey
+
+
+func change_door_state():
+	pass # Replace with function body.
