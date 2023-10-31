@@ -18,3 +18,4 @@ func _draw():
 		draw_line(Vector2(x * cell_size, 0), 
 		Vector2(x * cell_size, tilemap_rect.size.y * cell_size),
 		color)
+

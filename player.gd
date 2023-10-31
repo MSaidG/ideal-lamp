@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal change_dimension()
 
 var is_moving : bool = false
 var hasKey : bool = false
@@ -16,7 +17,6 @@ var can_move_l : bool = true
 var can_move_r : bool = true
 var x_position : int
 var y_position : int
-
 
 # parameters/Idle/blend_position
 
@@ -46,6 +46,7 @@ func _input(event: InputEvent) -> void:
 
 	if !check_is_moving():
 		get_movement_input(event)
+		get_dimension_input(event)
 
 	update_animation(move_direction)
 		
@@ -54,7 +55,7 @@ func _physics_process(_delta):
 
 	# print(raycast_f.is_colliding())
 	if raycast_b.is_colliding() and (raycast_b.get_collider() != null):
-		if raycast_b.get_collider().name == "TileMap":
+		if "TileMap" in raycast_b.get_collider().name:
 			can_move_b = false
 	else:
 		can_move_b = true
@@ -68,36 +69,17 @@ func _physics_process(_delta):
 		can_move_f = true
 	
 	if raycast_r.is_colliding() and (raycast_r.get_collider() != null):
-		if raycast_r.get_collider().name == "TileMap":
+		if "TileMap" in raycast_r.get_collider().name:
 			can_move_r = false
 	else:
 		can_move_r = true
 			
 	if raycast_l.is_colliding() and (raycast_l.get_collider() != null):
-		if raycast_l.get_collider().name == "TileMap":
+		if "TileMap" in raycast_l.get_collider().name:
 			can_move_l = false
 
 	else:
 		can_move_l = true
-
-
-
-	
-	# if raycast_f.is_colliding():
-		# can_move_f = !(raycast_f.get_collider().name == "TileMap")
-			
-	# if raycast_r.is_colliding():
-		# can_move_r = !(raycast_r.get_collider().name == "TileMap")
-		
-	# if raycast_l.is_colliding():
-		# can_move_l = !(raycast_l.get_collider().name == "TileMap")
-
-
-	# can_move_b = !raycast_b.is_colliding()
-	# can_move_f = !raycast_f.is_colliding()
-	# can_move_l = !raycast_l.is_colliding()
-	# can_move_r = !raycast_r.is_colliding()
-
 
 
 func get_movement_input(event):
@@ -120,6 +102,11 @@ func get_movement_input(event):
 	elif event.is_action_pressed("move_right") and can_move_r:
 		move_direction = Vector2(1, 0)
 		target_position = Vector2(x_position + distance_to_move, y_position)
+
+func get_dimension_input(event):
+
+	if event.is_action_pressed("change_dimension"):
+		emit_signal("change_dimension") 
 
 
 func update_animation(move_input: Vector2) -> void:
@@ -150,7 +137,7 @@ func check_position() -> void:
 		convert_position_to_int()
 		move_direction = Vector2.ZERO
 		
-		# print(self.position)
+		print(self.position)
 	
 
 func check_is_moving() -> bool:
@@ -176,3 +163,6 @@ func check_key() -> bool:
 
 func change_door_state():
 	pass # Replace with function body.
+
+
+
