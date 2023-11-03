@@ -137,7 +137,7 @@ func check_position() -> void:
 		convert_position_to_int()
 		move_direction = Vector2.ZERO
 		
-		print(self.position)
+		# print(self.position)
 	
 
 func check_is_moving() -> bool:

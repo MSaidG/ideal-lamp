@@ -1,12 +1,15 @@
 extends TileMap
 
+
 @onready var tilemap_rect = self.get_used_rect()
 @onready var cell_size = self.cell_quadrant_size
 @onready var color = Color(0.5, 0.5, 0.5)
 @onready var number_of_cell = 100 
 
 func _ready():
+
 	set_process(true)
+
 
 
 func _draw():
@@ -19,3 +22,9 @@ func _draw():
 		draw_line(Vector2(x * cell_size, -number_of_cell * cell_size), 
 				Vector2(x * cell_size, tilemap_rect.size.y * cell_size),
 				color)
+
+
+func _process(_delta):
+	# get_clicked_tile_power()
+	pass
+

@@ -6,6 +6,19 @@ extends TileMap
 @onready var number_of_cell = 100 
 
 func _ready():
+	
+	# print(get_cell_source_id(0, Vector2i(0, 0)))
+	# print(get_cell_atlas_coords(0, Vector2i(0, 0)))
+	# erase_cell(0, Vector2i(0, 0))
+	# erase_cell(1, Vector2i(0, 0))
+
+	# print("")
+
+	# print(get_cell_source_id(0, Vector2i(0, 0)))
+	# print(get_cell_atlas_coords(0, Vector2i(0, 1)))
+	# erase_cell(0, Vector2i(0, 1))
+	# erase_cell(1, Vector2i(0, 1))
+
 	set_process(true)
 
 
