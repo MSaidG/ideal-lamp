@@ -2,17 +2,17 @@ extends Node
 
 @onready var map_one = $TileMapOne
 @onready var map_two = $TileMapTwo
-@onready var player = get_node("/root/LevelTesting/Player")
+@onready var player = get_node("../Player")
 
 
 func _ready():
 	remove_child(map_one)
+
 	
-	
-func change_dimension():
+func change_dimension(): # Connected from player 
 
 	var player_position = player.position
-	
+
 	if map_one.visible:
 		remove_child(map_one)
 		add_child(map_two)

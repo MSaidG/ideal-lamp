@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal change_dimension()
+signal changed_location()
 
 var is_moving : bool = false
 var hasKey : bool = false
@@ -63,7 +64,6 @@ func _physics_process(_delta):
 	if raycast_f.is_colliding() and (raycast_f.get_collider() != null):
 		if "TileMap" in raycast_f.get_collider().name:
 			can_move_f = false
-		print(raycast_f.get_collider().name)
 
 	else:
 		can_move_f = true
@@ -136,6 +136,7 @@ func check_position() -> void:
 	if target_position == current_position:
 		convert_position_to_int()
 		move_direction = Vector2.ZERO
+		emit_signal("changed_location") 
 		
 		# print(self.position)
 	
@@ -151,9 +152,9 @@ func convert_position_to_int():
 	position.y = int(position.y)
 
 
-func get_key():
+func get_key(): # Connected from key
 	hasKey = true
-	print(hasKey)
+	# print(hasKey)
 
 
 func check_key() -> bool:

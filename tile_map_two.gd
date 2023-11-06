@@ -11,7 +11,6 @@ func _ready():
 	set_process(true)
 
 
-
 func _draw():
 	for y in range(-number_of_cell, number_of_cell):
 		draw_line(Vector2(-number_of_cell * cell_size, y * cell_size), 
@@ -24,7 +23,4 @@ func _draw():
 				color)
 
 
-func _process(_delta):
-	# get_clicked_tile_power()
-	pass
 
