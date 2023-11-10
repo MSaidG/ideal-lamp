@@ -1,5 +1,7 @@
 extends Node
 
+signal changed_dimension()
+
 @onready var map_one = $TileMapOne
 @onready var map_two = $TileMapTwo
 @onready var player = get_node("../Player")
@@ -21,6 +23,7 @@ func change_dimension(): # Connected from player
 		if isTwoOkay:
 			map_two.visible = true
 			map_one.visible = false
+			emit_signal("changed_dimension", 2)
 		else:
 			remove_child(map_two)
 			add_child(map_one)
@@ -34,6 +37,7 @@ func change_dimension(): # Connected from player
 		if isOneOkay:
 			map_two.visible = false
 			map_one.visible = true
+			emit_signal("changed_dimension", 1)
 		else:
 			remove_child(map_one)
 			add_child(map_two)

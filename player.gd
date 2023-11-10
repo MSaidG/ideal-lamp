@@ -3,9 +3,10 @@ extends CharacterBody2D
 signal change_dimension()
 signal changed_location()
 
-var is_moving : bool = false
-var hasKey : bool = false
 const TILE_SIZE = 16
+var is_moving : bool = false
+var is_changed_location : bool = true
+var hasKey : bool = false
 
 var move_direction := Vector2.ZERO
 var player_position := self.get_position_delta()
@@ -18,6 +19,14 @@ var can_move_l : bool = true
 var can_move_r : bool = true
 var x_position : int
 var y_position : int
+
+var is_in_dialogue : bool = false:
+	set (value):
+		is_in_dialogue = value
+	get:
+		return is_in_dialogue
+
+
 
 # parameters/Idle/blend_position
 
@@ -45,7 +54,7 @@ func _process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 
-	if !check_is_moving():
+	if !check_is_moving() and !is_in_dialogue:
 		get_movement_input(event)
 		get_dimension_input(event)
 
@@ -90,18 +99,25 @@ func get_movement_input(event):
 	if event.is_action_pressed("move_forward") and can_move_f:
 		move_direction = Vector2(0, -1)
 		target_position = Vector2(x_position, y_position - distance_to_move)
+		is_changed_location = true
 
 	elif event.is_action_pressed("move_backward") and can_move_b:
 		move_direction = Vector2(0, 1)
 		target_position = Vector2(x_position, y_position + distance_to_move)
+		is_changed_location = true
+
 
 	elif event.is_action_pressed("move_left") and can_move_l:
 		move_direction = Vector2(-1, 0)
 		target_position = Vector2(x_position - distance_to_move, y_position)
+		is_changed_location = true
+
 
 	elif event.is_action_pressed("move_right") and can_move_r:
 		move_direction = Vector2(1, 0)
 		target_position = Vector2(x_position + distance_to_move, y_position)
+		is_changed_location = true
+
 
 func get_dimension_input(event):
 
@@ -136,8 +152,9 @@ func check_position() -> void:
 	if target_position == current_position:
 		convert_position_to_int()
 		move_direction = Vector2.ZERO
-		emit_signal("changed_location") 
-		
+		if is_changed_location:
+			emit_signal("changed_location")
+			is_changed_location = false
 		# print(self.position)
 	
 
@@ -162,8 +179,9 @@ func check_key() -> bool:
 	return hasKey
 
 
-func change_door_state():
-	pass # Replace with function body.
+func enter_dialogue_mode():
+	is_in_dialogue = true
 
 
-
+func exit_dialogue_mode():
+	is_in_dialogue = false
